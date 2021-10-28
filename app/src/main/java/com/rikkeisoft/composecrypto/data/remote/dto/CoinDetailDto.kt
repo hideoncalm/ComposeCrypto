@@ -1,6 +1,7 @@
 package com.rikkeisoft.composecrypto.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
+import com.rikkeisoft.composecrypto.domain.model.CoinDetail
 
 data class CoinDetailDto(
     val contract: String,
@@ -39,7 +40,7 @@ data class CoinDetailDto(
     val startedAt: String,
     val symbol: String,
     val tags: List<Tag>,
-    val team: List<Team>,
+    val team: List<TeamMember>,
     val type: String,
     @SerializedName("whitepaper")
     val whitePaper: WhitePaper
@@ -88,7 +89,7 @@ data class CoinDetailDto(
         val name: String
     )
 
-    data class Team(
+    data class TeamMember(
         val id: String,
         val name: String,
         val position: String
@@ -97,5 +98,18 @@ data class CoinDetailDto(
     data class WhitePaper(
         val link: String,
         val thumbnail: String
+    )
+}
+
+fun CoinDetailDto.toCoinDetail(): CoinDetail {
+    return CoinDetail(
+        coinId = id,
+        name = name,
+        description = description,
+        symbol =  symbol,
+        rank = rank,
+        isActive = isActive,
+        tags = tags.map { it.name },
+        team = team
     )
 }
